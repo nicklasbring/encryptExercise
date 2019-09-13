@@ -1,52 +1,55 @@
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
-        System.out.println("[+] Indtast adgangskode: ");
-        String password = input.nextLine();
-        Cipher cipher = new Cipher(password);
+        PrintWriter printWriter = null;
 
-        System.out.println("[+] Tast 1 for at kryptere en besked");
-        System.out.println("[+] Tast 2 for at dekryptere en besked ");
+            System.out.println("[+] Indtast adgangskode: ");
+            String password = input.nextLine();
+            Cipher cipher = new Cipher(password);
 
-        int decision = input.nextInt();
+            System.out.println("[+] Tast 1 for at kryptere en besked");
+            System.out.println("[+] Tast 2 for at dekryptere en besked ");
 
-        if (decision == 1) {
-                System.out.println("[+] Indtast besked til at kryptere: ");
-                String inputMsg = input.nextLine();
-            System.out.println(inputMsg);
+            int decision = input.nextInt();
+
+            switch (decision) {
+
+                case 1:
+                    System.out.println("[+] Indtast besked til at kryptere: ");
+                    input.nextLine(); //throw away the \n not consumed by nextInt()
+                    String inputMsg = input.nextLine();
+                    try {
+                        printWriter = new PrintWriter("textFile.txt");
+                        printWriter.println(cipher.encrypt(inputMsg));
+                        printWriter.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } break;
+
+
+                case 2:
+                    BufferedReader bufferedReader = null;
+                    try {
+                        bufferedReader = new BufferedReader(new FileReader("textFile.txt"));
+                        String decryptedText;
+                        while ((decryptedText = bufferedReader.readLine()) != null) {
+                            printWriter = new PrintWriter("textFile.txt");
+                                printWriter.println(cipher.decrypt(decryptedText));
+                                printWriter.close();
+                                System.out.println(cipher.decrypt(decryptedText));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } break;
+
+                default:
+                    System.out.println("Du har indtastet et forkert nummer. Prøv igen!");
+                    break;
+
+            }
         }
-
-
-        /*switch (decision) {
-            case (1):
-                System.out.println("[+] Indtast besked til at kryptere: ");
-                String inputMsg = input.nextLine();*/
-
-        /*if (decision == 1){
-            System.out.println("[+] Indtast besked til at kryptere: ");
-            String inputMsg = input.nextLine();
-        }*/
-
-        /*
-
-        else if (decision == 2){
-            System.out.println("2");
-        }
-
-        else{
-            System.out.println("Forkert tal");
-        }
-*/
-
-
-
-
-    }
 }

@@ -9,6 +9,7 @@ public class Cipher {
 
 
     public Cipher(String key){
+        this.key = key;
         // Generate shift length from input key
         if (key.length() > 26) {
             if (key.length() / 2 > 26) {
@@ -24,14 +25,6 @@ public class Cipher {
     }
 
     public String encrypt(String msg){
-        /*
-        try {
-            printWriter = new PrintWriter("textFile.txt");
-            printWriter.println(cipher.encrypt(inputMsg));
-            printWriter.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
 
         // Convert string to charArray
         char[] chars = msg.toCharArray();
@@ -83,5 +76,13 @@ public class Cipher {
             chars[i] = letter;
         }
         return new String(chars);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
