@@ -28,6 +28,15 @@ public class Cipher {
         // Iterate over chars
         for (int i = 0; i < chars.length; i++) {
             char letter = chars[i];
+            switch (letter) {
+                case ('Å'): letter = 'Å';
+                case ('å'): letter = 'å';
+                case ('Æ'): letter = 'Æ';
+                case ('æ'): letter = 'æ';
+                case ('Ø'): letter = 'Ø';
+                case ('ø'): letter = 'ø';
+                    continue;
+            }
             letter = (char) (letter + this.shift);
             if (letter > '~') {
                 letter = (char) (letter - 26);
@@ -45,6 +54,15 @@ public class Cipher {
 
         for (int i = 0; i < chars.length; i++) {
             char letter = chars[i];
+            switch (letter) {
+                case ('Å'): letter = 'Å';
+                case ('å'): letter = 'å';
+                case ('Æ'): letter = 'Æ';
+                case ('æ'): letter = 'æ';
+                case ('Ø'): letter = 'Ø';
+                case ('ø'): letter = 'ø';
+                    continue;
+            }
             letter = (char) (letter - this.shift);
             if (letter > '~') {
                 letter = (char) (letter - 26);
