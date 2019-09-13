@@ -29,9 +29,9 @@ public class Cipher {
         for (int i = 0; i < chars.length; i++) {
             char letter = chars[i];
             letter = (char) (letter + this.shift);
-            if (letter > 'z') {
+            if (letter > '~') {
                 letter = (char) (letter - 26);
-            } else if (letter < 'a') {
+            } else if (letter < ' ') {
                 letter = (char) (letter + 26);
             }
             chars[i] = letter;
@@ -43,19 +43,16 @@ public class Cipher {
         //Decode Base64
         char[] chars = new String(Base64.getDecoder().decode(input)).toCharArray();
 
-        int decryptShift = -this.shift;
-
         for (int i = 0; i < chars.length; i++) {
             char letter = chars[i];
             letter = (char) (letter - this.shift);
-            if (letter < 'a') {
-                letter = (char) (letter + 26);
-            } else if (letter > 'z') {
+            if (letter > '~') {
                 letter = (char) (letter - 26);
+            } else if (letter < ' ') {
+                letter = (char) (letter + 26);
             }
             chars[i] = letter;
         }
-
         return new String(chars);
     }
 }
