@@ -1,3 +1,5 @@
+import java.util.Base64;
+
 public class Cipher {
 
     private String key;
@@ -23,7 +25,18 @@ public class Cipher {
         // Convert string to charArray
         char[] chars = msg.toCharArray();
 
-        return null;
+        // Iterate over chars
+        for (int i = 0; i < chars.length; i++) {
+            char letter = chars[i];
+            letter = (char) (letter + this.shift);
+            if (letter > 'z') {
+                letter = (char) (letter - 26);
+            } else if (letter < 'a') {
+                letter = (char) (letter + 26);
+            }
+            chars[i] = letter;
+        }
+        return Base64.getEncoder().encodeToString(new String(chars).getBytes());
     }
 
     public String decrypt(){
