@@ -39,9 +39,23 @@ public class Cipher {
         return Base64.getEncoder().encodeToString(new String(chars).getBytes());
     }
 
-    public String decrypt(){
-        return null;
+    public String decrypt(String input){
+        //Decode Base64
+        char[] chars = new String(Base64.getDecoder().decode(input)).toCharArray();
+
+        int decryptShift = -this.shift;
+
+        for (int i = 0; i < chars.length; i++) {
+            char letter = chars[i];
+            letter = (char) (letter - this.shift);
+            if (letter < 'a') {
+                letter = (char) (letter + 26);
+            } else if (letter > 'z') {
+                letter = (char) (letter - 26);
+            }
+            chars[i] = letter;
+        }
+
+        return new String(chars);
     }
-
-
 }
