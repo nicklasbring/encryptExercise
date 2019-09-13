@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Base64;
 
 public class Cipher {
@@ -22,6 +24,15 @@ public class Cipher {
     }
 
     public String encrypt(String msg){
+        /*
+        try {
+            printWriter = new PrintWriter("textFile.txt");
+            printWriter.println(cipher.encrypt(inputMsg));
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
+
         // Convert string to charArray
         char[] chars = msg.toCharArray();
 
