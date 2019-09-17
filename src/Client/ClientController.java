@@ -1,5 +1,6 @@
 package Client;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -33,6 +34,11 @@ public class ClientController implements ClientListener {
 
     @Override
     public void updateTextArea(String message) {
-        chatroom.appendText(message + "\n");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                chatroom.appendText(message + "\n");
+            }
+        });
     }
 }
