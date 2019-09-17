@@ -14,6 +14,7 @@ public class Client implements Runnable {
     private ObjectOutputStream output;
     private ClientListener clientListener;
     private Cipher cipher;
+    private String password;
 
 
     Client(ClientListener clientListener) {
@@ -39,6 +40,8 @@ public class Client implements Runnable {
 
             while (true){
                 messageInfo = (MessageInfo) input.readObject();
+                cipher = new Cipher(messageInfo.getKode());
+                messageInfo.setBesked(cipher.decrypt(messageInfo.getBesked()));
                 clientListener.updateTextArea(messageInfo.getAfsender() + ": " + messageInfo.getBesked());
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -48,7 +51,6 @@ public class Client implements Runnable {
 
     public void sendTekstChatServer(String password, String afsender, String message) {
         try {
-            cipher = new Cipher(password);
             String encryptedMessage = cipher.encrypt(message);
             output.writeObject(new MessageInfo(password, afsender, encryptedMessage));
             output.flush();

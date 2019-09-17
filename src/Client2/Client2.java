@@ -37,6 +37,8 @@ public class Client2 implements Runnable {
             MessageInfo messageInfo;
             while (true){
                 messageInfo = (MessageInfo) input.readObject();
+                cipher = new Cipher(messageInfo.getKode());
+                messageInfo.setBesked(cipher.decrypt(messageInfo.getBesked()));
                 clientListener.updateTextArea(messageInfo.getAfsender() + ": " + messageInfo.getBesked());
             }
         } catch (IOException | ClassNotFoundException e) {
