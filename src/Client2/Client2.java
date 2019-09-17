@@ -1,5 +1,6 @@
 package Client2;
 
+import Client.Cipher;
 import Client.ClientListener;
 import Client.MessageInfo;
 
@@ -14,6 +15,7 @@ public class Client2 implements Runnable {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private ClientListener clientListener;
+    private Cipher cipher;
 
 
     public Client2(ClientListener clientListener) {
@@ -37,16 +39,19 @@ public class Client2 implements Runnable {
                 messageInfo = (MessageInfo) input.readObject();
                 clientListener.updateTextArea(messageInfo.getAfsender() + ": " + messageInfo.getBesked());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendTekstChatServer(String afsender, String message) {
+    public void sendTekstChatServer(String password, String afsender, String message) {
         try {
-            output.writeObject(new MessageInfo(afsender, message));
+
+            cipher = new Cipher(password);
+            String encryptedMessage = cipher.encrypt(message);
+
+            System.out.println(cipher.encrypt(encryptedMessage));
+            output.writeObject(new MessageInfo(password, afsender, encryptedMessage));
             output.flush();
         } catch (IOException e) {
             e.printStackTrace();

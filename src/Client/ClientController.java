@@ -9,7 +9,7 @@ import javafx.scene.input.KeyEvent;
 public class ClientController implements ClientListener {
 
     @FXML
-    TextField chatname;
+    TextField chatname, password;
 
     @FXML
     TextArea messageBox;
@@ -26,7 +26,7 @@ public class ClientController implements ClientListener {
 
     public void sendTekst(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER){
-            client.sendTekstChatServer(chatname.getText(), messageBox.getText());
+            client.sendTekstChatServer(password.getText(), chatname.getText(), messageBox.getText());
             messageBox.clear();
         }
     }

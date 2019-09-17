@@ -30,15 +30,12 @@ public class ClientHandler implements Runnable {
             try {
                 messageInfo = (MessageInfo) input.readObject();
 
-                listener.updateTextArea("Der blev skrevet en besked i chatrummet fra: "
-                        + socket.getRemoteSocketAddress() + "\n");
+                listener.updateTextArea(messageInfo.getAfsender() +" : " + messageInfo.getBesked() + "\n");
 
                 for (ClientHandler client : Server.clients){
                     client.getOutput().writeObject(messageInfo);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
