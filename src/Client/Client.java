@@ -28,19 +28,15 @@ public class Client implements Runnable {
             //Trying to connect to server
             socket = new Socket(serverIP, port);
 
-
-
             //Initializing input and outputstreams to communicate with server
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
 
             //Endless loop that updates the textArea in the gui with request from the server
             MessageInfo messageInfo;
-
-
             while (true){
                 messageInfo = (MessageInfo) input.readObject();
-                cipher = new Cipher(messageInfo.getKode());
+                cipher = new Cipher(password);
                 messageInfo.setBesked(cipher.decrypt(messageInfo.getBesked()));
                 clientListener.updateTextArea(messageInfo.getAfsender() + ": " + messageInfo.getBesked());
             }
@@ -51,12 +47,17 @@ public class Client implements Runnable {
 
     public void sendTekstChatServer(String password, String afsender, String message) {
         try {
+            cipher = new Cipher(password);
             String encryptedMessage = cipher.encrypt(message);
             output.writeObject(new MessageInfo(password, afsender, encryptedMessage));
             output.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

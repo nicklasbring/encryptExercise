@@ -16,6 +16,7 @@ public class Client2 implements Runnable {
     private ObjectOutputStream output;
     private ClientListener clientListener;
     private Cipher cipher;
+    private String password;
 
 
     public Client2(ClientListener clientListener) {
@@ -37,7 +38,7 @@ public class Client2 implements Runnable {
             MessageInfo messageInfo;
             while (true){
                 messageInfo = (MessageInfo) input.readObject();
-                cipher = new Cipher(messageInfo.getKode());
+                cipher = new Cipher(password);
                 messageInfo.setBesked(cipher.decrypt(messageInfo.getBesked()));
                 clientListener.updateTextArea(messageInfo.getAfsender() + ": " + messageInfo.getBesked());
             }
@@ -48,16 +49,22 @@ public class Client2 implements Runnable {
 
     public void sendTekstChatServer(String password, String afsender, String message) {
         try {
-
             cipher = new Cipher(password);
             String encryptedMessage = cipher.encrypt(message);
-
             System.out.println(cipher.encrypt(encryptedMessage));
             output.writeObject(new MessageInfo(password, afsender, encryptedMessage));
             output.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 
