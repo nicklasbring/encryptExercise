@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane prefHeight="399.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ClientController">
    <children>
       <TextArea fx:id="chatroom" editable="false" layoutX="29.0" layoutY="74.0" onKeyPressed="#sendTekst" prefHeight="229.0" prefWidth="542.0" style="-fx-background-color: cyan;" />
@@ -14,6 +15,12 @@
          </font>
       </Label>
       <TextField fx:id="chatname" layoutX="101.0" layoutY="27.0" promptText="Chatname" style="-fx-border-color: CYAN;" />
-      <TextArea fx:id="messageBox" onKeyPressed="#sendTekst" layoutX="29.0" layoutY="320.0" prefHeight="53.0" prefWidth="542.0" promptText="Write a message to the chat" style="-fx-background-color: cyan;" />
+      <TextArea fx:id="messageBox" layoutX="29.0" layoutY="320.0" onKeyPressed="#sendTekst" prefHeight="53.0" prefWidth="542.0" promptText="Write a message to the chat" style="-fx-background-color: cyan;" />
+      <TextField fx:id="password" layoutX="461.0" layoutY="28.0" prefHeight="27.0" prefWidth="110.0" promptText="Password" />
+      <Label layoutX="359.0" layoutY="30.0" prefHeight="23.0" prefWidth="87.0" text="Password" textFill="#868080">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

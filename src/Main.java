@@ -1,3 +1,5 @@
+import Client.Cipher;
+
 import java.io.*;
 import java.util.Scanner;
 
