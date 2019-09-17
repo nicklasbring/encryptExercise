@@ -1,90 +1,55 @@
 package Client;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Base64;
 
 public class Cipher {
 
-    private String key;
-    private int shift;
+    private byte[] key;
+    private int pos = 0;
 
 
     public Cipher(String key){
-        this.key = key;
-        // Generate shift length from input key
-        if (key.length() > 26) {
-            if (key.length() / 2 > 26) {
-                this.shift = key.length() / 3;
-            }
-            else {
-                this.shift = key.length() / 2;
-            }
-        }
-        else {
-            this.shift = key.length();
-        }
+        this.key = key.getBytes();
     }
 
     public String encrypt(String msg){
 
         // Convert string to charArray
-        char[] chars = msg.toCharArray();
+        byte[] bytes = msg.getBytes();
 
-        // Iterate over chars
-        for (int i = 0; i < chars.length; i++) {
-            char letter = chars[i];
-            switch (letter) {
-                case ('Å'): letter = 'Å';
-                case ('å'): letter = 'å';
-                case ('Æ'): letter = 'Æ';
-                case ('æ'): letter = 'æ';
-                case ('Ø'): letter = 'Ø';
-                case ('ø'): letter = 'ø';
-                    continue;
-            }
-            letter = (char) (letter + this.shift);
-            if (letter > '~') {
-                letter = (char) (letter - 26);
-            } else if (letter < ' ') {
-                letter = (char) (letter + 26);
-            }
-            chars[i] = letter;
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] += getNextInKey();
         }
-        return Base64.getEncoder().encodeToString(new String(chars).getBytes());
+
+        pos = 0;
+
+        String res = Base64.getEncoder().encodeToString(bytes);
+
+        return res;
     }
 
     public String decrypt(String input){
+
         //Decode Base64
-        char[] chars = new String(Base64.getDecoder().decode(input)).toCharArray();
+        byte[] bytes = Base64.getDecoder().decode(input);
 
-        for (int i = 0; i < chars.length; i++) {
-            char letter = chars[i];
-            switch (letter) {
-                case ('Å'): letter = 'Å';
-                case ('å'): letter = 'å';
-                case ('Æ'): letter = 'Æ';
-                case ('æ'): letter = 'æ';
-                case ('Ø'): letter = 'Ø';
-                case ('ø'): letter = 'ø';
-                    continue;
-            }
-            letter = (char) (letter - this.shift);
-            if (letter > '~') {
-                letter = (char) (letter - 26);
-            } else if (letter < ' ') {
-                letter = (char) (letter + 26);
-            }
-            chars[i] = letter;
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] -= getNextInKey();
         }
-        return new String(chars);
+
+        pos = 0;
+
+        return new String(bytes);
     }
 
-    public String getKey() {
-        return key;
-    }
+    //Finds the next letter in the key array (resetting at the end of array and starts over)
+    private byte getNextInKey(){
 
-    public void setKey(String key) {
-        this.key = key;
+        if(pos < key.length){
+            return key[pos++];
+        } else {
+            pos = 0;
+            return key[pos++];
+        }
     }
 }

@@ -1,6 +1,8 @@
 package Client2;
 
 import Client.ClientListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,9 +16,7 @@ public class Client2Controller implements ClientListener {
     TextField chatname, password;
 
     @FXML
-    TextArea messageBox;
-
-    public TextArea chatroom;
+    TextArea messageBox, chatroom;
 
     Client2 client;
 
@@ -24,6 +24,13 @@ public class Client2Controller implements ClientListener {
         client = new Client2(this);
         Thread threadClient = new Thread(client);
         threadClient.start();
+
+        password.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                client.setPassword(newValue);
+            }
+        });
     }
 
     public void sendTekst(KeyEvent keyEvent) {
